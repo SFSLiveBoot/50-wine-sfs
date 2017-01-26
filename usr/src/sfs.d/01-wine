@@ -1,0 +1,22 @@
+#!/bin/sh
+
+
+: ${lbu:=/opt/LiveBootUtils}
+
+: ${bpo_list:=/etc/apt/sources.list.d/backports.list}
+: ${bpo_dist:=jessie-backports}
+
+set -e
+
+dpkg --add-architecture i386
+
+test -e "$bpo_list" ||
+  echo deb http://cdn.debian.net/debian $bpo_dist main contrib non-free >"$bpo_list"
+
+apt-get -o APT::Get::List-Cleanup=false update
+apt-get -y upgrade
+
+"$lbu/scripts/apt-sfs.sh" "$DESTDIR" wine
+"$lbu/scripts/apt-sfs.sh" "$DESTDIR" wine32/jessie-backports libwine:i386/jessie-backports libpulse0:i386/jessie-backports libgl1-mesa-glx:i386/jessie-backports libdrm2:i386/jessie-backports libglapi-mesa:i386/jessie-backports
+
+find "$DESTDIR/usr/bin" -name '*-stable' -exec sh -c 'for f; do test -e "${f%-stable}" || ln -s "${f##*/}" "${f%-stable}";done' _ {} +
