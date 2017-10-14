@@ -1,25 +1,17 @@
 #!/bin/sh
 
-
 : ${lbu:=/opt/LiveBootUtils}
-
-: ${bpo_list:=/etc/apt/sources.list.d/backports.list}
-: ${bpo_dist:=jessie-backports}
+: ${dist:=$(lsb_release -cs)}
 
 set -e
 
 dpkg --add-architecture i386
 
-test -e "$bpo_list" ||
-  echo deb http://cdn.debian.net/debian $bpo_dist main contrib non-free >"$bpo_list"
+curl -s https://dl.winehq.org/wine-builds/Release.key | apt-key add -
+
+echo "deb https://dl.winehq.org/wine-builds/debian/ $dist main" >/etc/apt/sources.list.d/wine.list
 
 apt-get -o APT::Get::List-Cleanup=false update
 apt-get -y upgrade
 
-"$lbu/scripts/apt-sfs.sh" "$DESTDIR" wine
-"$lbu/scripts/apt-sfs.sh" "$DESTDIR" wine32/${bpo_dist} libwine:i386/${bpo_dist} \
-  libpulse0:i386/${bpo_dist} \
-  libgl1-mesa-glx:i386/${bpo_dist} libdrm2:i386/${bpo_dist} libglapi-mesa:i386/${bpo_dist} \
-  libgl1-mesa-dri:i386/${bpo_dist} libdrm-intel1:i386/${bpo_dist} libdrm-nouveau2:i386/${bpo_dist} libdrm-radeon1:i386/${bpo_dist}
-
-find "$DESTDIR/usr/bin" -name '*-stable' -exec sh -c 'for f; do test -e "${f%-stable}" || ln -s "${f##*/}" "${f%-stable}";done' _ {} +
+"$lbu/scripts/apt-sfs.sh" "$DESTDIR" winehq-stable
