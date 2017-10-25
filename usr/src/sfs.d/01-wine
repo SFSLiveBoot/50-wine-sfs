@@ -3,6 +3,8 @@
 : ${lbu:=/opt/LiveBootUtils}
 : ${dist:=$(lsb_release -cs)}
 
+: "${wine_pkg:=winehq-stable}"
+
 set -e
 
 dpkg --add-architecture i386
@@ -14,4 +16,4 @@ echo "deb https://dl.winehq.org/wine-builds/debian/ $dist main" >/etc/apt/source
 apt-get -o APT::Get::List-Cleanup=false update
 apt-get -y upgrade
 
-"$lbu/scripts/apt-sfs.sh" "$DESTDIR" winehq-stable
+"$lbu/scripts/apt-sfs.sh" "$DESTDIR" $wine_pkg
