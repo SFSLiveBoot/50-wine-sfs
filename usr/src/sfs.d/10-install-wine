@@ -1,18 +1,13 @@
 #!/bin/sh
 
-: ${lbu:=/opt/LiveBootUtils}
-: ${dist:=$(lsb_release -cs)}
-
-: "${wine_pkg:=winehq-stable}"
-: "${i386_pkgs:=libgl1-mesa-dri:i386 libtxc-dxtn-s2tc:i386}"
-
 set -e
+. "$(dirname "$0")/.common.sh"
 
 dpkg --add-architecture i386
 
-curl -s https://dl.winehq.org/wine-builds/Release.key | apt-key add -
+curl -s "$repo_key_url" | apt-key add -
 
-echo "deb https://dl.winehq.org/wine-builds/debian/ $dist main" >/etc/apt/sources.list.d/wine.list
+echo "deb $deb_repo $dist main" >/etc/apt/sources.list.d/wine.list
 
 apt-get -o APT::Get::List-Cleanup=false update
 apt-get -y upgrade
