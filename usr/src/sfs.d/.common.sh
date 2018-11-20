@@ -15,5 +15,5 @@ installed_ver() {
 }
 
 latest_ver() {
-  curl -s "${deb_repo%/}/dists/${dist}/main/binary-${dist_arch}/Packages" | grep -e ^Package: -e ^Version: | grep -A1 -xF "Package: $wine_pkg" | grep ^Version | tail -1 | cut -f2 -d" "
+  curl -s "${deb_repo%/}/dists/${dist}/main/binary-${dist_arch}/Packages" | grep -e ^Package: -e ^Version: | grep -A1 -xF "Package: $wine_pkg" | grep ^Version | sort -V | tail -1 | cut -f2 -d" "
 }
