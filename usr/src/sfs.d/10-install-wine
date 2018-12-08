@@ -13,3 +13,8 @@ apt-get -o APT::Get::List-Cleanup=false update
 apt-get -y upgrade
 
 "$lbu/scripts/apt-sfs.sh" "$DESTDIR" $wine_pkg $i386_pkgs
+
+: "${wine_rec_i386:=$(grep ^Recommends: $(find "$DESTDIR/var/lib/dpkg/info" -name "wine*-i386.control") | cut -f2 -d: | tr , '\n' | awk '{print $1 ":i386"}')}"
+: "${wine_rec_amd64:=$(grep ^Recommends: $(find "$DESTDIR/var/lib/dpkg/info" -name "wine*-amd64.control") | cut -f2 -d: | tr , '\n' | awk '{print $1}')}"
+
+"$lbu/scripts/apt-sfs.sh" "$DESTDIR" $wine_rec_i386 $wine_rec_amd64

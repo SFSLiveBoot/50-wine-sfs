@@ -5,7 +5,7 @@
 : "${dist_arch:=$(dpkg --print-architecture)}"
 
 : "${wine_pkg:=winehq-stable}"
-: "${i386_pkgs:=libgl1-mesa-dri:i386 libtxc-dxtn-s2tc:i386}"
+: "${i386_pkgs:=libgl1-mesa-dri:i386 libtxc-dxtn-s2tc:i386 libxslt1.1:i386}"
 
 : "${deb_repo:=https://dl.winehq.org/wine-builds/debian/}"
 : "${repo_key_url:=https://dl.winehq.org/wine-builds/Release.key}"
