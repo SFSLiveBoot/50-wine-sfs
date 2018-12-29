@@ -9,6 +9,7 @@
 
 : "${deb_repo:=https://dl.winehq.org/wine-builds/debian/}"
 : "${repo_key_url:=https://dl.winehq.org/wine-builds/winehq.key}"
+: "${rec_ignore:=libsane.*}"
 
 installed_ver() {
   grep "^Version: " "$DESTDIR/var/lib/dpkg/info/${wine_pkg}.control" | cut -f2 -d" "

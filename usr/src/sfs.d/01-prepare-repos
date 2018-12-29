@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+. "$(dirname "$0")/.common.sh"
+
+dpkg --add-architecture i386
+
+curl -s "$repo_key_url" | apt-key add -
+
+echo "deb $deb_repo $dist main" >/etc/apt/sources.list.d/wine.list
+
+apt-get -o APT::Get::List-Cleanup=false update
+apt-get -y upgrade
