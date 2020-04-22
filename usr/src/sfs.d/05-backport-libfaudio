@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+. "$(dirname "$0")/.common.sh"
+
+echo deb-src http://cdn.debian.net/debian testing main contrib non-free >/etc/apt/sources.list.d/testing-sources.list
+apt-get update
+
+deb_build="/usr/src/deb"
+
+mkdir -p "$deb_build"
+cd "$deb_build"
+apt-get -y build-dep faudio
+
+apt-get -y source --compile faudio
+dpkg_src="$(find "$deb_build" -mindepth 1 -maxdepth 1 -type d -name 'faudio-*' | sort -n | tail -1)"
+
+apt-get -y install crossbuild-essential-i386
+apt-get -y build-dep -a i386 faudio
+
+( cd "$dpkg_src"; dpkg-buildpackage -a i386 -b -uc )
+
+dpkg-scanpackages . >Packages
+
+echo deb file://"$deb_build" ./ >/etc/apt/sources.list.d/usr-src-deb.list
+ln -s "$deb_build"/Packages "/var/lib/apt/lists/$(echo "$deb_build/./Packages" | tr / _)"
