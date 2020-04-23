@@ -3,4 +3,5 @@
 set -e
 . "$(dirname "$0")/.common.sh"
 
+export dpkg_status="$dpkg_status_save"
 "$lbu/scripts/apt-sfs.sh" "$DESTDIR" $wine_pkg $i386_pkgs

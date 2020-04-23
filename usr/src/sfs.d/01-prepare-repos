@@ -11,3 +11,5 @@ echo "deb $deb_repo $dist main" >/etc/apt/sources.list.d/wine.list
 
 apt-get -o APT::Get::List-Cleanup=false update
 apt-get -y upgrade
+
+cp /var/lib/dpkg/status "$dpkg_status_save"

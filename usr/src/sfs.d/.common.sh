@@ -11,6 +11,8 @@
 : "${repo_key_url:=https://dl.winehq.org/wine-builds/winehq.key}"
 : "${rec_ignore:=libsane.*}"
 
+: "${dpkg_status_save:=/var/lib/dpkg/status.save-preinst}"
+
 installed_ver() {
   grep "^Version: " "$DESTDIR/var/lib/dpkg/info/${wine_pkg}.control" | cut -f2 -d" "
 }
