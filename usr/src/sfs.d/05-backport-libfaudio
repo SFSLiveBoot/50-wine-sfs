@@ -28,7 +28,7 @@ fi
 
 dpkg-scanpackages --multiversion . >Packages
 
-echo deb file://"$deb_build_dir" ./ >/etc/apt/sources.list.d/usr-src-deb.list
+echo "deb [trusted=yes] file://$deb_build_dir ./" >/etc/apt/sources.list.d/usr-src-deb.list
 deb_build_lst_name="$(echo "$deb_build_dir/./Packages" | tr / _)"
 test -L "/var/lib/apt/lists/$deb_build_lst_name" ||
   ln -vfs "$deb_build_dir"/Packages "/var/lib/apt/lists/$deb_build_lst_name"
