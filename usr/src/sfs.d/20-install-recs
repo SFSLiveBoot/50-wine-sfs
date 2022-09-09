@@ -5,6 +5,7 @@ set -e
 
 recs_sh='for ctrl;do arch="$(grep "^Architecture:" "$ctrl" | cut -f2 -d" ")"; grep "^Recommends:" "$ctrl" | cut -f2 -d: | tr , "\n" | tr -d " " | sed -Ee "s/\||$/:$arch&/g" | grep -vxEe "$rec_ignore";done'
 
+export rec_ignore
 : "${wine_recs:=$(find "$DESTDIR/var/lib/dpkg/info" -name "*wine*.control" -exec sh -c "$recs_sh" a {} +)}"
 
 export dpkg_status="$dpkg_status_save"
