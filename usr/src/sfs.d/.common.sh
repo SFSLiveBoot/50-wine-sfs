@@ -9,7 +9,7 @@
 
 : "${deb_repo:=https://dl.winehq.org/wine-builds/debian/}"
 : "${repo_key_url:=https://dl.winehq.org/wine-builds/winehq.key}"
-: "${rec_ignore:=libsane.*|libcap2.*}"
+: "${rec_ignore:=libsane.*|libcap2.*|libtiff5.*}"
 
 : "${dpkg_status_save:=/var/lib/dpkg/status.save-preinst}"
 
