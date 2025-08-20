@@ -5,10 +5,6 @@ set -e
 
 dpkg --add-architecture i386
 
-curl -s "$repo_key_url" | gpg --dearmor >/etc/apt/trusted.gpg.d/wine.gpg
-
-echo "deb $deb_repo $dist main" >/etc/apt/sources.list.d/wine.list
-
 cat >/etc/apt/preferences.d/latest-build-tools <<EOF
 Package: debhelper dwz meson
 Pin: origin *
